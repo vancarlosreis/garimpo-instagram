@@ -1,0 +1,55 @@
+GARIMPO DE REFERÊNCIAS NO INSTAGRAM, DENTRO DO CLAUDE
+Guia rápido de uso
+
+LIGAR (só uma vez, pelo navegador do computador)
+  1. Entre no claude.ai com a sua conta.
+  2. Configurações > Conectores > Adicionar conector personalizado.
+  3. Nome: Garimpo Instagram. URL: o endereço do conector (é secreto: não compartilhe nem poste).
+  4. Salve. Pronto: vale também no app do Claude no celular.
+  Numa conversa, se o Claude não usar o conector, confira no botão + (ou no ícone de ferramentas) se ele está ligado.
+
+O QUE PEDIR (é só escrever do seu jeito; alguns exemplos)
+
+  Garimpar referências por tema
+    "Garimpa referências de carrossel sobre clareamento dental para uma clínica de Curitiba."
+    "Quero formatos que dá para replicar, de quem fala de criação de conteúdo para pequenos negócios."
+  O Claude acha perfis do nicho, puxa os posts recentes, escolhe os que mais saíram da curva, lê as legendas
+  e te devolve um LINK DO PAINEL, além de um resumo no chat.
+
+  Buscar virais
+    "Quero os 30 conteúdos mais engajados do nicho médico nos últimos 30 dias, com pelo menos 30 mil curtidas."
+  O Claude junta o piso de curtidas com o desempenho: só entra o que também ficou bem acima do normal do perfil.
+
+  Garimpar perfis que você já conhece
+    "Garimpa os perfis fulano, ciclano e beltrano. Quero o que mais performou em reels."
+
+  Garimpar hashtags
+    "Vê o que está performando em clareamentodental e odontologiaestetica."
+    Use hashtags específicas do nicho. Hashtags genéricas (socialmedia, marketingdigital) trazem post de outros
+    países e assuntos. A Meta libera só 30 hashtags novas por semana.
+
+O PAINEL
+  - Abre no celular e no computador. Começa com um catálogo de formatos (lista, contraste, mito × verdade...)
+    e mostra os destaques com capa, métricas, gancho, estrutura, objetivos, "por que funciona" e "como adaptar".
+  - Embaixo ficam todos os posts coletados, com filtros.
+  - Quem tiver o link do painel consegue abrir: mande só para quem você quiser.
+  - Quer mudar algo? Peça ao Claude ("tira esse destaque", "foca em ideias para o cliente X") e ele publica
+    um painel novo, com outro link.
+
+BOM SABER
+  - "x× o normal do perfil" é o quanto o post ficou acima do que aquele perfil costuma ter. Os rótulos: ACIMA DA
+    CURVA (2×), FORA DA CURVA (3×), VIRAL (5×), EXCEPCIONAL (10×). Posts com menos de 3 dias aparecem como
+    "em maturação" ou "subindo".
+  - A análise vem da legenda e das métricas: o Claude não vê os slides nem ouve os vídeos. O painel mostra as
+    imagens para você conferir.
+  - As métricas são só as públicas (curtidas, comentários e visualizações). Salvamentos e compartilhamentos de
+    outras contas não aparecem.
+  - Só entram contas profissionais (Empresa ou Criador). Conta pessoal não aparece.
+  - Viral não quer dizer correto: confira a informação antes de usar um post como modelo.
+  - Referência é inspiração: não copie arte nem texto, e mantenha o crédito do perfil.
+
+SE ALGO DER ERRADO
+  - "token expirou": o token da Meta venceu (dura uns 60 dias). Avise quem configurou o conector.
+  - "não encontrado ou não é conta profissional": o perfil é pessoal ou mudou de @. Peça para seguir sem ele.
+  - "limite de hashtags": passou de 30 hashtags novas na semana. Use perfis ou espere uns dias.
+  - "limite de chamadas": a Meta limita as consultas por hora. Espere de 15 a 30 minutos.

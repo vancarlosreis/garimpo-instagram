@@ -1,0 +1,21 @@
+COMO USAR: descompacte o pacote, abra o terminal DENTRO desta pasta, digite claude e cole todo o texto abaixo.
+Antes, faça as Partes 1, 2 e 3 do LEIA-ME.txt (app da Meta, token de 60 dias e IG_USER_ID): elas são no navegador.
+
+----------------------------------------------------------------------------------------------------------------
+
+Quero instalar o conector de garimpo de Instagram desta pasta na minha conta do Vercel. Siga o LEIA-ME.txt, opção B (terminal), com estas regras.
+
+SEGURANÇA
+1. Nunca me peça no chat o token da Meta, o App Secret, senhas ou códigos. O IG_GRAPH_TOKEN e o IG_USER_ID eu mesmo cadastro no painel do Vercel quando você pedir.
+2. Nunca mostre na tela o CONECTOR_SEGREDO nem o endereço completo do conector. Gere o segredo (40 letras e números) dentro do próprio comando, envie direto para o Vercel e grave o endereço completo só no arquivo ENDERECO-DO-CONECTOR.txt desta pasta.
+3. Não rode vercel env pull e não leia nem mostre arquivos .env ou com tokens.
+
+PASSOS
+1. Confira se o Node.js está instalado (node -v). Se não estiver, instale com a minha autorização ou me diga como instalar.
+2. Rode npx vercel login e espere eu confirmar no navegador.
+3. Publique com npx vercel deploy --prod --yes (cria o projeto com o nome da pasta).
+4. Crie o armazenamento privado e ligue ao projeto: npx vercel blob create-store garimpo-instagram --access private --yes. Confira com npx vercel env ls se apareceu BLOB_READ_WRITE_TOKEN ou BLOB_STORE_ID em Production.
+5. Gere o CONECTOR_SEGREDO e cadastre em Production sem quebra de linha no fim (por exemplo: printf '%s' "$SEGREDO" | npx vercel env add CONECTOR_SEGREDO production). Descubra o domínio de produção do projeto (nome-do-projeto.vercel.app, nunca o endereço longo de cada publicação, que fica protegido por login) e grave em ENDERECO-DO-CONECTOR.txt: https://<domínio>/mcp/<segredo>
+6. Pare e me peça para cadastrar IG_GRAPH_TOKEN (marcado como Sensitive) e IG_USER_ID no painel do Vercel: projeto > Settings > Environment Variables > Production. Espere eu avisar.
+7. Publique de novo (npx vercel deploy --prod --yes) e teste com um script que lê o endereço do arquivo, chama initialize e tools/list e mostra só a versão e o número de ferramentas (deve dar 1.0.0 e 4). Se der erro, explique sem mostrar o endereço.
+8. No fim, me diga como cadastrar o conector no claude.ai (Configurações > Conectores > Adicionar conector personalizado, com o endereço do arquivo) e como abrir a página de uso (o mesmo endereço com /uso no final).

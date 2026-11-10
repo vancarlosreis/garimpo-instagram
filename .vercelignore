@@ -1,0 +1,8 @@
+LEIA-ME.txt
+GUIA-DE-USO.txt
+PROMPT-PARA-O-CLAUDE-CODE.txt
+ENDERECO-DO-CONECTOR.txt
+**/__pycache__
+*.bak
+.venv
+.env*

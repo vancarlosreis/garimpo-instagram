@@ -1,0 +1,140 @@
+CONECTOR DE GARIMPO DE INSTAGRAM PARA O CLAUDE  —  versão 1.0
+Passo a passo para colocar no ar na SUA conta. Leva uns 40 minutos na primeira vez.
+
+O QUE ELE FAZ
+  No Claude (site, app do computador e celular), você pede algo como "garimpa referências de carrossel sobre
+  clareamento dental" e o Claude:
+    1. acha perfis do nicho com a busca na web;
+    2. coleta os posts pela API oficial da Meta (garimpar_perfis, garimpar_hashtags);
+    3. compara cada post com o normal do próprio perfil e marca o que saiu da curva (ver_garimpo);
+    4. analisa os destaques e publica um painel com link que abre no celular (publicar_painel).
+  Este conector não lê posts por link nem transcreve vídeos: a análise usa legenda, métricas e formato.
+  O passo a passo do garimpo vai dentro do próprio conector: quem usa não precisa instalar nada no Claude.
+
+O QUE VOCÊ PRECISA
+  - Plano pago do Claude (Pro, Max, Team ou Enterprise): conector personalizado só existe nos planos pagos.
+  - Conta do Instagram PROFISSIONAL (Empresa ou Criador de conteúdo) ligada a uma Página do Facebook, e
+    acesso ao Facebook que administra essa Página. É essa conta que faz as consultas.
+  - Conta no Vercel (vercel.com). O plano Hobby, grátis, basta.
+  - Conta no GitHub (github.com), grátis. O botão de publicar copia o código para ela.
+
+SEGURANÇA: LEIA ANTES
+  - O token da Meta é uma senha. Nunca cole em conversa com o Claude nem em nenhum chat. Ele só vai do site
+    da Meta direto para o painel do Vercel.
+  - O endereço do conector termina num segredo. Quem tiver o endereço usa o conector com o SEU token: não
+    compartilhe nem poste.
+  - Vazou o token? Gerar outro não basta: o antigo vale até vencer. Remova o app no Facebook (Configurações >
+    Integrações comerciais, ou Apps e sites) ou troque a senha do Facebook. Depois refaça as Partes 1 e 2.
+
+PARTE 1 — CRIAR O APP NA META (só uma vez)
+  1. Acesse developers.facebook.com e entre com o Facebook que administra a Página. Na primeira vez, a Meta
+     pede para você se cadastrar como desenvolvedor: siga as telas.
+  2. Clique em Create App (Criar app). Dê um nome (ex.: Garimpo) e informe seu e-mail.
+  3. Caso de uso: Other (Outro). Tipo de app: Business (Empresa). Se pedir portfólio empresarial, escolha o
+     seu ou "ainda não quero conectar".
+  4. No painel do app, procure o produto Instagram e clique em Set up (Configurar). Escolha
+     "API setup with Facebook login" (com login do Facebook).
+  5. Pronto. NÃO precisa publicar o app, configurar webhooks nem mandar para análise: em modo de
+     desenvolvimento ele funciona para quem administra o app.
+
+PARTE 2 — GERAR O TOKEN DE 60 DIAS
+  1. Abra developers.facebook.com/tools/explorer (Graph API Explorer).
+  2. Em Meta App, escolha o app. Em User or Page, escolha User Token.
+  3. Em Permissions, adicione estas 5:
+       pages_show_list, pages_read_engagement, business_management, instagram_basic, instagram_manage_insights
+  4. Clique em Generate Access Token. Na janela do Facebook, MARQUE a Página e a conta do Instagram.
+     Sem marcar, o conector não acha nenhuma conta.
+  5. Esse token dura 1 a 2 horas. Para ter um de ~60 dias: abra developers.facebook.com/tools/debug/accesstoken,
+     cole o token, clique em Debug e depois em Extend Access Token (no fim da página).
+     Copie o token novo (começa com EAA). Você vai colá-lo no Vercel na Parte 4.
+
+PARTE 3 — DESCOBRIR O ID DA CONTA DO INSTAGRAM (IG_USER_ID)
+  1. Ainda no Graph API Explorer, com o token gerado, apague o que estiver no campo da consulta e escreva:
+       me/accounts?fields=name,instagram_business_account{id,username}
+  2. Clique em Submit. Na resposta, o número em "instagram_business_account" > "id" (começa com 1784...) é o
+     IG_USER_ID. Confira se o "username" ao lado é a sua conta.
+
+OUTRO ATALHO: INSTALAR COM O CLAUDE CODE (para quem já usa o terminal; faz a Parte 4 e testa)
+  Depois das Partes 1, 2 e 3, abra o terminal dentro desta pasta, digite claude e cole o texto do arquivo
+  PROMPT-PARA-O-CLAUDE-CODE.txt. O Claude Code publica, liga o armazenamento, gera o segredo e grava o endereço
+  em ENDERECO-DO-CONECTOR.txt, sem mostrar na tela. Ele para e pede para você cadastrar o token e o IG_USER_ID
+  no painel do Vercel; depois publica de novo e testa. Aí é só seguir para a Parte 7.
+
+PARTE 4 — PUBLICAR NO VERCEL COM O BOTÃO (5 minutos)
+  1. Invente a senha do endereço (CONECTOR_SEGREDO): 40 letras e números, num gerador de senhas ou, no
+     PowerShell:
+       -join ((48..57)+(65..90)+(97..122) | Get-Random -Count 40 | ForEach-Object {[char]$_})
+     Sem ela (ou com menos de 16 caracteres), o conector fica fechado.
+  2. Abra github.com/vancarlosreis/garimpo-instagram e clique no botão "Deploy" (Publicar no Vercel).
+  3. Entre com o GitHub (crie a conta no Vercel com "Continue with GitHub", se ainda não tiver). Confirme o
+     nome do repositório: o Vercel copia o código para a SUA conta do GitHub.
+  4. Na tela do armazenamento (Blob), confirme a criação, com acesso Private.
+  5. Preencha as três informações:
+       IG_GRAPH_TOKEN     o token de 60 dias da Parte 2
+       IG_USER_ID         o número da Parte 3
+       CONECTOR_SEGREDO   a senha do passo 1
+  6. Clique em Deploy e espere 1 ou 2 minutos, até a tela de parabéns.
+  Pronto: não precisa publicar de novo. Cada mudança no seu repositório publica sozinha.
+
+  SEM O BOTÃO (se ele não funcionar)
+    1. No GitHub, crie um repositório privado e suba a pasta api e os arquivos pyproject.toml e
+       requirements.txt ("uploading an existing file" > Commit changes).
+    2. No Vercel: Add New > Project > Import. Antes do Deploy, abra Environment Variables e cadastre as três
+       informações acima. Clique em Deploy.
+    3. Storage > Create > Blob > Private > conecte ao projeto em Production.
+    4. Deployments > ... > Redeploy, para a ferramenta enxergar o armazenamento.
+
+PARTE 7 — CADASTRAR NO CLAUDE
+  1. O endereço do conector é:
+       https://<domínio do projeto>/mcp/<CONECTOR_SEGREDO>
+     O domínio aparece na página do projeto no Vercel (algo como nome-do-projeto.vercel.app).
+     Guarde esse endereço num lugar seguro: ele é secreto.
+  2. Em claude.ai: Configurações > Conectores > Adicionar conector personalizado. Nome: Garimpo Instagram.
+     URL: o endereço acima. Salve. Passa a valer também no app do celular.
+  3. Numa conversa nova, confira no botão + (ou no ícone de ferramentas) se o conector está ligado e peça
+     um garimpo pequeno, com 2 ou 3 perfis.
+
+PARTE 8 — CONFERIR SE ESTÁ TUDO CERTO
+  Abra no navegador o mesmo endereço com /uso no final:
+    https://<domínio do projeto>/mcp/<CONECTOR_SEGREDO>/uso
+  Deve mostrar "Situação da Meta: Liberada" e quantos dias faltam para o token vencer. Essa página também é
+  secreta. Ela mostra os usos por dia, as chamadas à Meta na última hora, as hashtags da semana, a validade do
+  token e a lista de garimpos com os links dos painéis.
+
+RENOVAR O TOKEN (a cada ~60 dias)
+  O token vence em uns 60 dias, ou antes, se a senha do Facebook mudar. A página de uso avisa quando faltam 10
+  dias. Para renovar: refaça a Parte 2, troque o valor de IG_GRAPH_TOKEN no Vercel e publique de novo (Redeploy).
+  O IG_USER_ID e o CONECTOR_SEGREDO continuam os mesmos.
+
+LIMITES
+  - Só contas profissionais (Empresa ou Criador) e posts públicos. Conta pessoal não aparece.
+  - App em modo de desenvolvimento: ~200 chamadas à Meta por hora. Cada perfil gasta pelo menos uma. Ao passar,
+    a Meta recusa por até 1 hora. Cada resposta do conector mostra quantas foram usadas na última hora.
+  - Hashtags: 30 hashtags novas a cada 7 dias, por conta. A busca por hashtag pode exigir que a Meta libere o
+    recurso Instagram Public Content Access; se der erro de permissão só nas hashtags, use perfis.
+  - Cache: posts de um perfil ficam guardados por 6 h e top posts de hashtag por 3 h, para poupar o limite.
+    Garimpar de novo os mesmos perfis nesse intervalo não chama a Meta.
+  - Métricas públicas apenas: curtidas, comentários e visualizações. Perfis que escondem curtidas ficam sem nota.
+
+SE ALGO DER ERRADO
+  - "a API da Meta não está configurada": faltam IG_GRAPH_TOKEN ou IG_USER_ID, ou você não publicou de novo
+    depois de cadastrar.
+  - "token da Meta expirou ou foi revogado": renove o token (veja acima).
+  - "Missing Blob credentials": o armazenamento (Blob) não está conectado ao projeto no ambiente Production. No
+    Vercel: Storage > Create > Blob > Private > conecte em Production, e depois Deployments > ... > Redeploy.
+  - "não encontrado ou não é conta profissional": o perfil é pessoal, mudou de @ ou tem restrição de idade.
+  - "limite de chamadas": espere de 15 a 30 minutos e tente de novo, uma vez só.
+  - O Claude não usa o conector: abra uma conversa nova e confira se ele está ligado no botão +.
+  - Versão nova deu problema: no Vercel, Deployments > escolha a versão anterior > Instant Rollback.
+
+ARQUIVOS
+  api/index.py        o servidor MCP: instruções para o Claude, as 4 ferramentas e as rotas
+  api/app_garimpo.py  coleta, ranking pelo normal do perfil, cache da Meta e publicação do painel
+  api/garimpo.py      chamadas à API da Meta e cálculo das notas
+  api/painel.py       monta o painel HTML
+  api/uso.py          registro de uso e a página /uso
+  pyproject.toml      dependências e ponto de entrada no Vercel
+  GUIA-DE-USO.txt     guia rápido para quem vai usar no Claude
+  PROMPT-PARA-O-CLAUDE-CODE.txt   o texto para instalar com o Claude Code (atalho acima)
+  ENDERECO-DO-CONECTOR.txt        criado na instalação, com o endereço secreto (não vai para o Vercel nem
+                                  para o GitHub)
